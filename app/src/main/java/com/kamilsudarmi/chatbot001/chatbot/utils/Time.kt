@@ -1,4 +1,4 @@
-package com.example.chatbot.utils
+package com.kamilsudarmi.chatbot001.chatbot.utils
 
 import android.annotation.SuppressLint
 import java.sql.Timestamp

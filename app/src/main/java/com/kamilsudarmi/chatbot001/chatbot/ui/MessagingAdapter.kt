@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.chatbot.data.Message
-import com.example.chatbot.utils.Constants.RECEIVE_ID
-import com.example.chatbot.utils.Constants.SEND_ID
+import com.kamilsudarmi.chatbot001.chatbot.data.Message
+import com.kamilsudarmi.chatbot001.chatbot.utils.Constants.RECEIVE_ID
+import com.kamilsudarmi.chatbot001.chatbot.utils.Constants.SEND_ID
 import com.kamilsudarmi.chatbot001.R
 
 class MessagingAdapter: RecyclerView.Adapter<MessagingAdapter.MessagingViewHolder>() {

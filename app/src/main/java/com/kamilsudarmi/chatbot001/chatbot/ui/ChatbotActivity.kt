@@ -5,11 +5,10 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.chatbot.data.Message
+import com.kamilsudarmi.chatbot001.chatbot.data.Message
 import com.example.chatbot.utils.BotResponse
-import com.example.chatbot.utils.Constants
-import com.example.chatbot.utils.Time
-import com.kamilsudarmi.chatbot001.R
+import com.kamilsudarmi.chatbot001.chatbot.utils.Constants
+import com.kamilsudarmi.chatbot001.chatbot.utils.Time
 import com.kamilsudarmi.chatbot001.databinding.ActivityChatbotBinding
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
