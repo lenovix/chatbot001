@@ -10,6 +10,7 @@ import com.kamilsudarmi.chatbot001.MainActivity
 import com.kamilsudarmi.chatbot001.api.ApiClient
 import com.kamilsudarmi.chatbot001.auth.login.model.LoginRequest
 import com.kamilsudarmi.chatbot001.auth.login.model.LoginResponse
+import com.kamilsudarmi.chatbot001.auth.register.ui.RegisterActivity
 import com.kamilsudarmi.chatbot001.databinding.ActivityLoginBinding
 import org.json.JSONException
 import org.json.JSONObject
@@ -29,6 +30,10 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnLogin.setOnClickListener {
             loginMethod()
+        }
+        binding.btnRegisterPage.setOnClickListener {
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -52,12 +57,15 @@ class LoginActivity : AppCompatActivity() {
                     val token = loginResponse?.message
                     val user = loginResponse?.user
 
-                    loginSuccess()
+                    // Simpan status login sebagai true di SharedPreferences
+                    val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.putBoolean("isLoggedIn", true)
+                    editor.putString("userName", loginResponse?.user?.name)
+                    editor.apply()
 
                     // Arahkan pengguna ke MainActivity atau tampilan utama lainnya
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    intent.putExtra("userId", user?.id)
-                    intent.putExtra("userName", user?.name)
                     startActivity(intent)
                     finish() // Optional: Tutup LoginActivity agar pengguna tidak dapat kembali ke sini setelah login
                 } else {
@@ -78,13 +86,5 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("failure", "onFailure: $t")
             }
         })
-    }
-
-    private fun loginSuccess() {
-        // Simpan status login sebagai true di SharedPreferences
-        val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("isLoggedIn", true)
-        editor.apply()
     }
 }
