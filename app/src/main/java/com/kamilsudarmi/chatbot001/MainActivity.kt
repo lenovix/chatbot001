@@ -10,15 +10,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.kamilsudarmi.chatbot001.chatbot.ui.ChatbotActivity
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity(){
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private lateinit var imageView: ImageView
+    private val imageArray = arrayOf(
+        R.drawable.img1,
+        R.drawable.img2,
+        R.drawable.img3
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -47,12 +56,21 @@ class MainActivity : AppCompatActivity(){
             }
         }
 
+        imageView = findViewById(R.id.img_tipsHealty)
+        displayRandomImage()
 
         val fab: View = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
             val chatbotPage = Intent(this, ChatbotActivity::class.java)
             startActivity(chatbotPage)
         }
+    }
+
+    private fun displayRandomImage() {
+        val randomIndex = Random.nextInt(imageArray.size)
+        val randomImage = imageArray[randomIndex]
+        imageView.setImageResource(randomImage)
+        Log.d("random image", "displayRandomImage: $randomIndex")
     }
 
     private fun checkLocationPermission(): Boolean {
