@@ -1,6 +1,6 @@
-package com.kamilsudarmi.chatbot001.auth.login.model
+package com.kamilsudarmi.chatbot001.auth.register.model
 
-data class LoginResponse(
+data class RegistrationResponse(
     val message: String,
     val user: User
 )

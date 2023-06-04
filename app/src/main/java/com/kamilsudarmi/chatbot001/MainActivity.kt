@@ -23,8 +23,6 @@ import com.kamilsudarmi.chatbot001.databinding.ActivityMainBinding
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity(){
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var imageView: ImageView
@@ -33,6 +31,9 @@ class MainActivity : AppCompatActivity(){
         R.drawable.img2,
         R.drawable.img3
     )
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)

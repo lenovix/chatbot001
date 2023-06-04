@@ -10,6 +10,7 @@ import com.kamilsudarmi.chatbot001.MainActivity
 import com.kamilsudarmi.chatbot001.api.ApiClient
 import com.kamilsudarmi.chatbot001.auth.login.model.LoginRequest
 import com.kamilsudarmi.chatbot001.auth.login.model.LoginResponse
+import com.kamilsudarmi.chatbot001.auth.register.ui.RegisterActivity
 import com.kamilsudarmi.chatbot001.databinding.ActivityLoginBinding
 import org.json.JSONException
 import org.json.JSONObject
@@ -29,6 +30,10 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnLogin.setOnClickListener {
             loginMethod()
+        }
+        binding.btnRegisterPage.setOnClickListener {
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 
