@@ -3,11 +3,12 @@ package com.kamilsudarmi.chatbot001.auth.login.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import com.kamilsudarmi.chatbot001.MainActivity
-import com.kamilsudarmi.chatbot001.R
 import com.kamilsudarmi.chatbot001.api.ApiClient
-import com.kamilsudarmi.chatbot001.auth.login.model.LoginModel
-import com.kamilsudarmi.chatbot001.auth.response.UserResponse
+import com.kamilsudarmi.chatbot001.auth.login.model.LoginRequest
+import com.kamilsudarmi.chatbot001.auth.login.model.LoginResponse
 import com.kamilsudarmi.chatbot001.databinding.ActivityLoginBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,7 +23,9 @@ class LoginActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        loginMethod()
+        binding.btnLogin.setOnClickListener {
+            loginMethod()
+        }
     }
 
     private fun loginMethod() {
@@ -31,36 +34,37 @@ class LoginActivity : AppCompatActivity() {
         val password = binding.edtPassword.text.toString()
 
         // Membuat objek loginModel
-        val loginModel = LoginModel(username, password)
+        val loginRequest = LoginRequest(username, password)
+
+        Log.d("logininfo", "loginMethod: $username , $password")
 
         // Memanggil metode login pada ApiService
-        val call = ApiClient.apiService.login(loginModel)
-        call.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                if (response.isSuccessful) {
-                    val userResponse = response.body()
-                    // Proses respon dari server
-                    val message = userResponse?.message
-                    val user = userResponse?.user
-                    // Misalnya, menyimpan token otentikasi atau menampilkan data pengguna
-                    if (user != null) {
-                        val userId = user.id
-                        val username = user.username
-                        val email = user.email
-                        // Lakukan sesuatu dengan data pengguna yang diterima
-                        // Arahkan pengguna ke MainActivity
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        startActivity(intent)
-                        finish() // Selesai dengan LoginActivity agar tidak dapat kembali dengan tombol back
+        val call = ApiClient.apiService.login(loginRequest)
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                if (response.code() == 200) {
+                    // Respons berhasil
+                    val loginResponse = response.body()
+                    val token = loginResponse?.message
+                    val user = loginResponse?.user
+
+                    // Setelah login berhasil, arahkan pengguna ke MainActivity
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    intent.putExtra("userId", user?.id)
+                    intent.putExtra("userName", user?.name)
+                    startActivity(intent)
                 } else {
-                    // Menangani respon tidak berhasil (misalnya, kesalahan server atau data login yang tidak valid)
-                    val errorBody = response.errorBody()?.string()
-                    // Lakukan sesuatu dengan pesan kesalahan atau respons yang tidak berhasil
+                    // Tangani respons gagal atau kesalahan lainnya
+                    val errorMessage = response.errorBody()?.string()
+                    // Tampilkan pesan kesalahan kepada pengguna
+                    runOnUiThread {
+                        Toast.makeText(this@LoginActivity, errorMessage, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
-        }
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                TODO("Not yet implemented")
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.d("failure", "onFailure: $t")
             }
         })
     }
