@@ -16,11 +16,15 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.kamilsudarmi.chatbot001.auth.login.ui.LoginActivity
 import com.kamilsudarmi.chatbot001.chatbot.ui.ChatbotActivity
+import com.kamilsudarmi.chatbot001.databinding.ActivityMainBinding
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity(){
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private lateinit var binding: ActivityMainBinding
 
     private lateinit var imageView: ImageView
     private val imageArray = arrayOf(
@@ -30,7 +34,9 @@ class MainActivity : AppCompatActivity(){
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -63,6 +69,11 @@ class MainActivity : AppCompatActivity(){
         fab.setOnClickListener { view ->
             val chatbotPage = Intent(this, ChatbotActivity::class.java)
             startActivity(chatbotPage)
+        }
+
+        binding.btnLoginPage.setOnClickListener { view ->
+            val login = Intent(this, LoginActivity::class.java)
+            startActivity(login)
         }
     }
 
