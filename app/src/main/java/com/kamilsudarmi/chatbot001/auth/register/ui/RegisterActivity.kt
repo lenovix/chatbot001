@@ -54,6 +54,7 @@ class RegisterActivity : AppCompatActivity() {
                         val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
                         val editor = sharedPreferences.edit()
                         editor.putBoolean("isLoggedIn", true)
+                        editor.putString("userName", registrationResponse?.user?.name)
                         editor.apply()
 
                         // Mengarahkan pengguna ke MainActivity

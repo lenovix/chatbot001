@@ -77,6 +77,7 @@ class MainActivity : AppCompatActivity(){
     private fun checkLoginStatus() {
         val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+        val userName = sharedPreferences.getString("userName", "user")
 
         if (!isLoggedIn) {
             // Jika pengguna belum pernah login, arahkan ke LoginActivity
@@ -84,8 +85,8 @@ class MainActivity : AppCompatActivity(){
             startActivity(intent)
             finish() // Optional: Tutup MainActivity agar pengguna tidak dapat kembali ke sini tanpa login
         } else {
-            // Jika pengguna sudah login, lanjutkan ke tampilan utama atau activity lainnya
-            // ...
+            val welcomeMessage = "Welcome, $userName!"
+            binding.tvWelcome.text = welcomeMessage
         }
     }
 
