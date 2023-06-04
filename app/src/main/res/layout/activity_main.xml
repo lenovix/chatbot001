@@ -58,6 +58,12 @@ tools:context=".MainActivity">
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:contentDescription="image for tips"/>
+
+    <Button
+        android:id="@+id/btn_loginPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login Page" />
 </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
