@@ -1,6 +1,7 @@
 package com.kamilsudarmi.chatbot001
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
@@ -38,8 +39,56 @@ class MainActivity : AppCompatActivity(){
         val view = binding.root
         setContentView(view)
 
+        checkLoginStatus()
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        permissionCheck()
+
+        imageView = findViewById(R.id.img_tipsHealty)
+        displayRandomImage()
+
+        val fab: View = findViewById(R.id.fab)
+        fab.setOnClickListener { view ->
+            val chatbotPage = Intent(this, ChatbotActivity::class.java)
+            startActivity(chatbotPage)
+        }
+
+        binding.btnLogout.setOnClickListener {
+            logout()
+        }
+    }
+
+    private fun logout() {
+        // Hapus status login dari SharedPreferences
+        val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("isLoggedIn", false)
+        editor.apply()
+
+        // Arahkan pengguna kembali ke LoginActivity
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish() // Optional: Tutup MainActivity agar pengguna tidak dapat kembali ke sini setelah logout
+    }
+
+
+    private fun checkLoginStatus() {
+        val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+
+        if (!isLoggedIn) {
+            // Jika pengguna belum pernah login, arahkan ke LoginActivity
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish() // Optional: Tutup MainActivity agar pengguna tidak dapat kembali ke sini tanpa login
+        } else {
+            // Jika pengguna sudah login, lanjutkan ke tampilan utama atau activity lainnya
+            // ...
+        }
+    }
+
+    private fun permissionCheck() {
         // Meminta izin jika belum diberikan
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
@@ -60,20 +109,6 @@ class MainActivity : AppCompatActivity(){
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
                 )
             }
-        }
-
-        imageView = findViewById(R.id.img_tipsHealty)
-        displayRandomImage()
-
-        val fab: View = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            val chatbotPage = Intent(this, ChatbotActivity::class.java)
-            startActivity(chatbotPage)
-        }
-
-        binding.btnLoginPage.setOnClickListener { view ->
-            val login = Intent(this, LoginActivity::class.java)
-            startActivity(login)
         }
     }
 

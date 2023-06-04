@@ -1,4 +1,4 @@
-package com.example.chatbot.utils
+package com.kamilsudarmi.chatbot001.chatbot.utils
 
 object Constants {
     const val SEND_ID = "SEND_ID"

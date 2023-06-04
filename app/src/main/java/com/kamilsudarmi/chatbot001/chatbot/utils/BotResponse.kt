@@ -1,7 +1,9 @@
 package com.example.chatbot.utils
 
-import com.example.chatbot.utils.Constants.OPEN_GOOGLE
-import com.example.chatbot.utils.Constants.OPEN_SEARCH
+import com.kamilsudarmi.chatbot001.chatbot.utils.Constants.OPEN_GOOGLE
+import com.kamilsudarmi.chatbot001.chatbot.utils.Constants.OPEN_SEARCH
+import com.kamilsudarmi.chatbot001.chatbot.utils.SolveMath
+import com.kamilsudarmi.chatbot001.chatbot.utils.Time
 import java.lang.Exception
 
 object BotResponse {
