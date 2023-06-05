@@ -69,7 +69,7 @@ class ChatbotActivity : AppCompatActivity() {
                     val predictions = response.body()
                     if (!predictions.isNullOrEmpty()) {
                         val prediction = predictions[0].prediction
-                        displayChatMessage("Chatbot: Prediction: $prediction")
+                        displayChatMessage("Chatbot: Analisis keadaan: $prediction")
                     }
                 } else {
                     showToast("Failed to process the request")
