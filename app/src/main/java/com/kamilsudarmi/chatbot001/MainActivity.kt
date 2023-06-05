@@ -19,13 +19,13 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.kamilsudarmi.chatbot001.auth.login.ui.LoginActivity
 import com.kamilsudarmi.chatbot001.chatbot.ui.ChatbotActivity
+import com.kamilsudarmi.chatbot001.chatbot2.Chatbot2Activity
 import com.kamilsudarmi.chatbot001.databinding.ActivityMainBinding
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity(){
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var imageView: ImageView
     private val imageArray = arrayOf(
         R.drawable.img1,
         R.drawable.img2,
@@ -46,13 +46,16 @@ class MainActivity : AppCompatActivity(){
 
         permissionCheck()
 
-        imageView = findViewById(R.id.img_tipsHealty)
         displayRandomImage()
 
-        val fab: View = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
+        binding.fab.setOnClickListener {
             val chatbotPage = Intent(this, ChatbotActivity::class.java)
             startActivity(chatbotPage)
+        }
+
+        binding.btnChatbotEmergency.setOnClickListener {
+            val chatbotEmergency = Intent(this, Chatbot2Activity::class.java)
+            startActivity(chatbotEmergency)
         }
 
         binding.btnLogout.setOnClickListener {
@@ -117,7 +120,7 @@ class MainActivity : AppCompatActivity(){
     private fun displayRandomImage() {
         val randomIndex = Random.nextInt(imageArray.size)
         val randomImage = imageArray[randomIndex]
-        imageView.setImageResource(randomImage)
+        binding.imgTipsHealty.setImageResource(randomImage)
         Log.d("random image", "displayRandomImage: $randomIndex")
     }
 

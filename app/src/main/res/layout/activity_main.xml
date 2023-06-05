@@ -69,6 +69,12 @@ tools:context=".MainActivity">
         android:contentDescription="image for tips"/>
 
     <Button
+        android:id="@+id/btn_chatbotEmergency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Emergency Chatbot" />
+
+    <Button
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
