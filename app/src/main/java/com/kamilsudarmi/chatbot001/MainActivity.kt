@@ -10,16 +10,13 @@ import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.kamilsudarmi.chatbot001.auth.login.ui.LoginActivity
-import com.kamilsudarmi.chatbot001.chatbot.ui.ChatbotActivity
-import com.kamilsudarmi.chatbot001.chatbot2.Chatbot2Activity
+import com.kamilsudarmi.chatbot001.chatbot.ChatbotActivity
 import com.kamilsudarmi.chatbot001.databinding.ActivityMainBinding
 import kotlin.random.Random
 
@@ -48,14 +45,9 @@ class MainActivity : AppCompatActivity(){
 
         displayRandomImage()
 
-        binding.fab.setOnClickListener {
+        binding.fabChatbot.setOnClickListener {
             val chatbotPage = Intent(this, ChatbotActivity::class.java)
             startActivity(chatbotPage)
-        }
-
-        binding.btnChatbotEmergency.setOnClickListener {
-            val chatbotEmergency = Intent(this, Chatbot2Activity::class.java)
-            startActivity(chatbotEmergency)
         }
 
         binding.btnLogout.setOnClickListener {

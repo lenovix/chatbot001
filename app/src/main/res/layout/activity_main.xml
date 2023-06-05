@@ -69,12 +69,6 @@ tools:context=".MainActivity">
         android:contentDescription="image for tips"/>
 
     <Button
-        android:id="@+id/btn_chatbotEmergency"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Emergency Chatbot" />
-
-    <Button
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -82,12 +76,12 @@ tools:context=".MainActivity">
 </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab_chatbot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="30dp"
-        android:contentDescription="chatbot"
+        android:contentDescription="Emergency Chatbot"
         android:src="@drawable/baseline_chat_24"/>
 </RelativeLayout>

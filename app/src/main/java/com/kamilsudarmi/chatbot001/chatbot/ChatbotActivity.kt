@@ -1,40 +1,30 @@
-package com.kamilsudarmi.chatbot001.chatbot2
+package com.kamilsudarmi.chatbot001.chatbot
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.kamilsudarmi.chatbot001.api.naiveBayer.ApiClientNB.apiServiceNB
-import com.kamilsudarmi.chatbot001.api.naiveBayer.ApiServiceNB
 import com.kamilsudarmi.chatbot001.api.naiveBayer.ChatResponse
-import com.kamilsudarmi.chatbot001.api.naiveBayer.UserInput
-import com.kamilsudarmi.chatbot001.databinding.ActivityChatbot2Binding
-import java.util.Locale
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import com.google.gson.Gson
+import com.kamilsudarmi.chatbot001.databinding.ActivityChatbotBinding
 import okhttp3.RequestBody
 
 
-class Chatbot2Activity : AppCompatActivity() {
-    private lateinit var binding: ActivityChatbot2Binding
+class ChatbotActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityChatbotBinding
 
     val TAG = "testing"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityChatbot2Binding.inflate(layoutInflater)
+        binding = ActivityChatbotBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
         binding.buttonSend.setOnClickListener {
-//            val userInput = binding.editTextUserInput.text.toString()
-//            if (userInput.isNotEmpty()) {
-//                val chatbotResponse = getChatbotResponse(userInput)
-//                displayChatMessage("Chatbot: $chatbotResponse")
-//                binding.editTextUserInput.text.clear()
-//            }
             val userInput = binding.editTextUserInput.text.toString().trim()
             if (userInput.isNotEmpty()) {
                 displayChatMessage("You: $userInput")
@@ -59,16 +49,12 @@ class Chatbot2Activity : AppCompatActivity() {
             if (waitingForUserInput){
                 analyzeEmergencyInfo(userInput)
                 waitingForUserInput = false
-            }else{
-                // Mengirim pesan ke server untuk menganalisis keadaan user
-//                analyzeEmergencyInfo(userInput)
             }
         }
     }
 
     private fun analyzeEmergencyInfo(userInput: String) {
         val gson = Gson()
-//        val userInput = binding.editTextUserInput.text.toString()
         val requestMap = mapOf("texts" to listOf(userInput))
         val requestBody = RequestBody.create(okhttp3.MediaType.parse("application/json"), gson.toJson(requestMap))
 

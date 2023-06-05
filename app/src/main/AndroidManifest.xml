@@ -19,7 +19,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".chatbot2.Chatbot2Activity"
+            android:name=".chatbot.ChatbotActivity"
             android:exported="false" />
         <activity
             android:name=".auth.register.ui.RegisterActivity"
