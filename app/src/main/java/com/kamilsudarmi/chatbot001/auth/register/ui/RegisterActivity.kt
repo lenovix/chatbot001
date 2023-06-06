@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.kamilsudarmi.chatbot001.MainActivity
 import com.kamilsudarmi.chatbot001.R
 import com.kamilsudarmi.chatbot001.api.ApiClient.apiService
+import com.kamilsudarmi.chatbot001.auth.login.ui.LoginActivity
 import com.kamilsudarmi.chatbot001.auth.register.model.RegistrationData
 import com.kamilsudarmi.chatbot001.auth.register.model.RegistrationResponse
 import com.kamilsudarmi.chatbot001.databinding.ActivityLoginBinding
@@ -47,18 +48,8 @@ class RegisterActivity : AppCompatActivity() {
             call.enqueue(object : Callback<RegistrationResponse> {
                 override fun onResponse(call: Call<RegistrationResponse>, response: Response<RegistrationResponse>) {
                     if (response.isSuccessful) {
-                        val registrationResponse = response.body()
-                        // Tangani respons sukses
-
-                        // Menyimpan status login menggunakan SharedPreferences
-                        val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
-                        val editor = sharedPreferences.edit()
-                        editor.putBoolean("isLoggedIn", true)
-                        editor.putString("userName", registrationResponse?.user?.name)
-                        editor.apply()
-
                         // Mengarahkan pengguna ke MainActivity
-                        val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                        val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                         startActivity(intent)
                         finish() // Optional: Mengakhiri activity registrasi agar tidak dapat dikembalikan
                     } else {

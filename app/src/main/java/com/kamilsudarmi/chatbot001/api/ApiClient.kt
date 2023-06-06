@@ -1,14 +1,13 @@
 package com.kamilsudarmi.chatbot001.api
 
+import com.kamilsudarmi.chatbot001.Constant.BASE_URL_NODE
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
-    private const val BASE_URL = "http://192.168.1.5:3000" // Ganti dengan URL server Anda
-
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BASE_URL_NODE)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
