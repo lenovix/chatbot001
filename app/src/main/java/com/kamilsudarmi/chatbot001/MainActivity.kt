@@ -11,13 +11,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.kamilsudarmi.chatbot001.Constant.BASE_URL_NODE
+import com.kamilsudarmi.chatbot001.api.ApiService
 import com.kamilsudarmi.chatbot001.auth.login.ui.LoginActivity
 import com.kamilsudarmi.chatbot001.chatbot.ChatbotActivity
 import com.kamilsudarmi.chatbot001.databinding.ActivityMainBinding
+import com.kamilsudarmi.chatbot001.requestUnit.RequestUnit
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity(){
@@ -52,6 +61,43 @@ class MainActivity : AppCompatActivity(){
 
         binding.btnLogout.setOnClickListener {
             logout()
+        }
+
+        binding.btnCallAmbulance.setOnClickListener {
+            val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
+            val user_id = sharedPreferences.getString("user_id", "3")
+            Log.d("address", "onCreate: $addressUser")
+            Log.d("latlong", "onCreate: $latLongUser")
+            val requestUnit = RequestUnit(
+                user_id = user_id, // Ganti dengan nilai user ID yang sesuai
+                address = addressUser, // Ganti dengan alamat pengguna yang sesuai
+                situation = "Emergency", // Ganti dengan situasi yang sesuai
+                unit = "Ambulance", // Ganti dengan unit yang dipilih oleh pengguna
+                status = "Pending" // Ganti dengan status yang sesuai
+            )
+            val retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL_NODE) // Ganti dengan base URL dari REST API Anda
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            val apiService = retrofit.create(ApiService::class.java)
+
+            apiService.sendRequestUnit(requestUnit).enqueue(object : Callback<Unit> {
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                    Log.d("check", "onResponse: ${response.code()}")
+                    if (response.isSuccessful) {
+                        Log.d("kirim", "onResponse: data berhasil dikirim")
+                    } else {
+                        Log.d("gagal", "onResponse: data tidak berhasil dikirim")
+                    }
+                }
+
+                override fun onFailure(call: Call<Unit>, t: Throwable) {
+                    Log.d("gagal", "onResponse: $t")
+                }
+            })
+
+
         }
     }
 
@@ -122,6 +168,8 @@ class MainActivity : AppCompatActivity(){
         return ContextCompat.checkSelfPermission(this, permission) == granted
     }
 
+    var addressUser: String = "address"
+    var latLongUser: String = "address"
     private fun getLastKnownLocation() {
         val locationTextView = findViewById<TextView>(R.id.locationTextView)
         if (checkLocationPermission()) {
@@ -140,6 +188,8 @@ class MainActivity : AppCompatActivity(){
                         val country = addresses[0].countryName
 
                         locationTextView.text = "$latitude, $longitude\n$address, $city, $country"
+                        addressUser = "$address, $city, $country"
+                        latLongUser = "$latitude, $longitude"
                     }
                 }
         } else {
