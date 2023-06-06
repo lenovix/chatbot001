@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -29,6 +28,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.random.Random
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity(){
     private lateinit var binding: ActivityMainBinding
 
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(){
             val requestUnit = RequestUnit(
                 user_id = user_id, // Ganti dengan nilai user ID yang sesuai
                 address = addressUser, // Ganti dengan alamat pengguna yang sesuai
-                situation = "Emergency", // Ganti dengan situasi yang sesuai
+                situation = "EMERGENCY", // Ganti dengan situasi yang sesuai
                 unit = "Ambulance", // Ganti dengan unit yang dipilih oleh pengguna
                 status = "Pending" // Ganti dengan status yang sesuai
             )
@@ -96,8 +96,74 @@ class MainActivity : AppCompatActivity(){
                     Log.d("gagal", "onResponse: $t")
                 }
             })
+        }
+        binding.btnCallPolice.setOnClickListener {
+            val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
+            val user_id = sharedPreferences.getString("user_id", "")
+            Log.d("address", "onCreate: $addressUser")
+            Log.d("latlong", "onCreate: $latLongUser")
+            val requestUnit = RequestUnit(
+                user_id = user_id, // Ganti dengan nilai user ID yang sesuai
+                address = addressUser, // Ganti dengan alamat pengguna yang sesuai
+                situation = "EMERGENCY", // Ganti dengan situasi yang sesuai
+                unit = "Police", // Ganti dengan unit yang dipilih oleh pengguna
+                status = "Pending" // Ganti dengan status yang sesuai
+            )
+            val retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL_NODE) // Ganti dengan base URL dari REST API Anda
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
 
+            val apiService = retrofit.create(ApiService::class.java)
 
+            apiService.sendRequestUnit(requestUnit).enqueue(object : Callback<Unit> {
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                    Log.d("check", "onResponse: ${response.code()}")
+                    if (response.isSuccessful) {
+                        Log.d("kirim", "onResponse: data berhasil dikirim")
+                    } else {
+                        Log.d("gagal", "onResponse: data tidak berhasil dikirim")
+                    }
+                }
+
+                override fun onFailure(call: Call<Unit>, t: Throwable) {
+                    Log.d("gagal", "onResponse: $t")
+                }
+            })
+        }
+        binding.btnCallFirefighter.setOnClickListener {
+            val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
+            val user_id = sharedPreferences.getString("user_id", "")
+            Log.d("address", "onCreate: $addressUser")
+            Log.d("latlong", "onCreate: $latLongUser")
+            val requestUnit = RequestUnit(
+                user_id = user_id, // Ganti dengan nilai user ID yang sesuai
+                address = addressUser, // Ganti dengan alamat pengguna yang sesuai
+                situation = "EMERGENCY", // Ganti dengan situasi yang sesuai
+                unit = "Firefighter", // Ganti dengan unit yang dipilih oleh pengguna
+                status = "Pending" // Ganti dengan status yang sesuai
+            )
+            val retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL_NODE) // Ganti dengan base URL dari REST API Anda
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            val apiService = retrofit.create(ApiService::class.java)
+
+            apiService.sendRequestUnit(requestUnit).enqueue(object : Callback<Unit> {
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                    Log.d("check", "onResponse: ${response.code()}")
+                    if (response.isSuccessful) {
+                        Log.d("kirim", "onResponse: data berhasil dikirim")
+                    } else {
+                        Log.d("gagal", "onResponse: data tidak berhasil dikirim")
+                    }
+                }
+
+                override fun onFailure(call: Call<Unit>, t: Throwable) {
+                    Log.d("gagal", "onResponse: $t")
+                }
+            })
         }
     }
 

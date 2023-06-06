@@ -6,7 +6,7 @@ data class RegistrationResponse(
 )
 
 data class User(
-    val id: Int,
+    val user_id: String,
     val name: String,
     val email: String,
     val password: String
