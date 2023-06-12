@@ -1,7 +1,9 @@
 package com.kamilsudarmi.chatbot001.chatbot
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.kamilsudarmi.chatbot001.api.naiveBayer.ApiClientNB.apiServiceNB
 import com.kamilsudarmi.chatbot001.api.naiveBayer.ChatResponse
@@ -9,8 +11,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import com.google.gson.Gson
+import com.kamilsudarmi.chatbot001.Constant
+import com.kamilsudarmi.chatbot001.api.ApiService
+import com.kamilsudarmi.chatbot001.api.naiveBayer.UserInput
 import com.kamilsudarmi.chatbot001.databinding.ActivityChatbotBinding
+import com.kamilsudarmi.chatbot001.requestUnit.RequestUnit
 import okhttp3.RequestBody
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class ChatbotActivity : AppCompatActivity() {
@@ -53,6 +61,7 @@ class ChatbotActivity : AppCompatActivity() {
         }
     }
 
+    var unitEmergency: String = ""
     private fun analyzeEmergencyInfo(userInput: String) {
         val gson = Gson()
         val requestMap = mapOf("texts" to listOf(userInput))
@@ -70,6 +79,50 @@ class ChatbotActivity : AppCompatActivity() {
                     if (!predictions.isNullOrEmpty()) {
                         val prediction = predictions[0].prediction
                         displayChatMessage("Chatbot: Analisis keadaan: $prediction")
+                        unitEmergency = prediction
+                        Log.d("Unit1", unitEmergency)
+                        val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
+                        val user_id = sharedPreferences.getString("user_id", "")
+                        //Log.d("address", "onCreate: $addressUser")
+                        //Log.d("latlong", "onCreate: $latLongUser")
+
+                        // Mengirim data ke server
+                        val requestUnit = RequestUnit(
+                            user_id = user_id, // Ganti dengan nilai user ID yang sesuai
+                            address = "kamil", // Ganti dengan alamat pengguna yang sesuai
+                            situation = userInput, // Ganti dengan situasi yang sesuai
+                            unit = unitEmergency, // Ganti dengan unit yang dipilih oleh pengguna
+                            status = "Pending" // Ganti dengan status yang sesuai
+                        )
+
+                        val retrofit = Retrofit.Builder()
+                            .baseUrl(Constant.BASE_URL_NODE) // Ganti dengan base URL dari REST API Anda
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build()
+
+                        val apiService = retrofit.create(ApiService::class.java)
+
+                        apiService.sendRequestUnit(requestUnit).enqueue(object : Callback<Unit> {
+                            override fun onResponse(
+                                call: Call<Unit>,
+                                response: Response<Unit>
+                            ) {
+                                Log.d("check", "onResponse: ${response.code()}")
+                                if (response.isSuccessful) {
+                                    Log.d("kirim", "onResponse: data berhasil dikirim")
+                                    val message = "data berhasil dikirim"
+                                    displayChatMessage(message)
+                                } else {
+                                    Log.d("gagal", "onResponse: data tidak berhasil dikirim")
+                                    val message = "data tidak berhasil dikirim"
+                                    displayChatMessage(message)
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                                displayChatMessage("Failed to send request")
+                            }
+                        })
                     }
                 } else {
                     showToast("Failed to process the request")
@@ -80,6 +133,8 @@ class ChatbotActivity : AppCompatActivity() {
                 showToast("An error occurred: ${t.message}")
             }
         })
+
+
     }
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
