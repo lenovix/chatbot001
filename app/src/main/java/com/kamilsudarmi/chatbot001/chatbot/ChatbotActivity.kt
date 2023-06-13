@@ -83,13 +83,15 @@ class ChatbotActivity : AppCompatActivity() {
                         Log.d("Unit1", unitEmergency)
                         val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
                         val user_id = sharedPreferences.getString("user_id", "")
-                        //Log.d("address", "onCreate: $addressUser")
+                        val sharedPreferencesAdress = getSharedPreferences("address", Context.MODE_PRIVATE)
+                        val user_address = sharedPreferencesAdress.getString("address", "").toString()
+                        Log.d("address", "onCreate: $user_address")
                         //Log.d("latlong", "onCreate: $latLongUser")
 
                         // Mengirim data ke server
                         val requestUnit = RequestUnit(
                             user_id = user_id, // Ganti dengan nilai user ID yang sesuai
-                            address = "kamil", // Ganti dengan alamat pengguna yang sesuai
+                            address = user_address, // Ganti dengan alamat pengguna yang sesuai
                             situation = userInput, // Ganti dengan situasi yang sesuai
                             unit = unitEmergency, // Ganti dengan unit yang dipilih oleh pengguna
                             status = "Pending" // Ganti dengan status yang sesuai
