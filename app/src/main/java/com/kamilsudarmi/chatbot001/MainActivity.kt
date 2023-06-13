@@ -57,6 +57,10 @@ class MainActivity : AppCompatActivity(){
         binding.fabChatbot.setOnClickListener {
             val chatbotPage = Intent(this, ChatbotActivity::class.java)
             startActivity(chatbotPage)
+            val sharedPreferences = getSharedPreferences("address", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putString("address", addressUser)
+            editor.apply()
         }
 
         binding.btnLogout.setOnClickListener {
