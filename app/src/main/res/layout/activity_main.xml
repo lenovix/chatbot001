@@ -5,75 +5,85 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".MainActivity">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_welcome"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Welcome user" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Emergency Call"
-        android:textStyle="bold"
-        android:textSize="17dp"
-        android:textColor="@color/black"/>
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/btn_callAmbulance"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Welcome user"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="AMBULANCE"/>
-        <Button
-            android:id="@+id/btn_callPolice"
+            android:text="Emergency Call"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="POLICE"/>
-        <Button
-            android:id="@+id/btn_callFirefighter"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_callAmbulance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AMBULANCE" />
+
+            <Button
+                android:id="@+id/btn_callPolice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="POLICE" />
+
+            <Button
+                android:id="@+id/btn_callFirefighter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FIREFIGHTER" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/locationTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FIREFIGHTER"/>
+            android:padding="16dp"
+            android:text="Lokasi anda tidak terdeteksi"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tips for your healty"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/img_tipsHealty"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:contentDescription="image for tips" />
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout" />
     </LinearLayout>
-    <TextView
-        android:id="@+id/locationTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="Lokasi anda tidak terdeteksi"
-        android:padding="16dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tips for your healty"
-        android:textStyle="bold"
-        android:textSize="17sp"
-        android:textColor="@color/black"/>
-    <ImageView
-        android:id="@+id/img_tipsHealty"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:contentDescription="image for tips"/>
-
-    <Button
-        android:id="@+id/btn_logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Logout" />
-</LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_chatbot"
