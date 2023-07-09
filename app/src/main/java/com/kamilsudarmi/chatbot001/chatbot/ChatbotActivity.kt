@@ -32,9 +32,7 @@ class ChatbotActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        displayChatMessage("INFORMATION:")
-        displayChatMessage("untuk menggunakan fitur analisa unit, bisa ketik:")
-        displayChatMessage("e/emer/emergency")
+        welcomeInformation()
 
         binding.buttonSend.setOnClickListener {
             val userInput = binding.editTextUserInput.text.toString().trim()
@@ -45,6 +43,11 @@ class ChatbotActivity : AppCompatActivity() {
             }
         }
     }
+    fun welcomeInformation(){
+        displayChatMessage("INFORMATION:")
+        displayChatMessage("untuk menggunakan fitur analisa unit, bisa ketik:")
+        displayChatMessage("e/emer/emergency")
+    }
 
     private fun displayChatMessage(message: String) {
         val currentChat = binding.textViewChat.text.toString()
@@ -53,20 +56,33 @@ class ChatbotActivity : AppCompatActivity() {
     }
 
     var waitingForUserInput: Boolean = false
+    var waitingForUserInputAddress: Boolean = false
+    var addressUser: String = ""
+    var emergencyUser = ""
     private fun analyzeUserInput(userInput: String) {
         if (userInput.lowercase() == "emergency" || userInput.lowercase() == "emer" || userInput.lowercase() == "e") {
             displayChatMessage("Bot: Ada apa?")
             waitingForUserInput = true
         } else {
-            if (waitingForUserInput){
-                analyzeEmergencyInfo(userInput)
+            if (waitingForUserInput) {
+                emergencyUser = userInput
+                displayChatMessage("Bot: Dimana?")
                 waitingForUserInput = false
+                waitingForUserInputAddress = true
+            }else{
+                if (waitingForUserInputAddress){
+                    addressUser = userInput
+                    waitingForUserInputAddress = false
+                    analyzeEmergencyInfo(emergencyUser, addressUser)
+                }
             }
+            welcomeInformation()
         }
     }
 
     var unitEmergency: String = ""
-    private fun analyzeEmergencyInfo(userInput: String) {
+    
+    private fun analyzeEmergencyInfo(userInput: String, userAddress: String) {
         val gson = Gson()
         val requestMap = mapOf("texts" to listOf(userInput))
         val requestBody = RequestBody.create(okhttp3.MediaType.parse("application/json"), gson.toJson(requestMap))
@@ -87,15 +103,15 @@ class ChatbotActivity : AppCompatActivity() {
                         Log.d("Unit1", unitEmergency)
                         val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
                         val user_id = sharedPreferences.getString("user_id", "")
-                        val sharedPreferencesAdress = getSharedPreferences("address", Context.MODE_PRIVATE)
-                        val user_address = sharedPreferencesAdress.getString("address", "").toString()
-                        Log.d("address", "onCreate: $user_address")
+                        //val sharedPreferencesAdress = getSharedPreferences("address", Context.MODE_PRIVATE)
+                        //val user_address = sharedPreferencesAdress.getString("address", "").toString()
+                        //Log.d("address", "onCreate: $user_address")
                         //Log.d("latlong", "onCreate: $latLongUser")
 
                         // Mengirim data ke server
                         val requestUnit = RequestUnit(
                             user_id = user_id, // Ganti dengan nilai user ID yang sesuai
-                            address = user_address, // Ganti dengan alamat pengguna yang sesuai
+                            address = userAddress, // Ganti dengan alamat pengguna yang sesuai
                             situation = userInput, // Ganti dengan situasi yang sesuai
                             unit = unitEmergency, // Ganti dengan unit yang dipilih oleh pengguna
                             status = "Pending" // Ganti dengan status yang sesuai
