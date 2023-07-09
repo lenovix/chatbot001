@@ -32,6 +32,10 @@ class ChatbotActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        displayChatMessage("INFORMATION:")
+        displayChatMessage("untuk menggunakan fitur analisa unit, bisa ketik:")
+        displayChatMessage("e/emer/emergency")
+
         binding.buttonSend.setOnClickListener {
             val userInput = binding.editTextUserInput.text.toString().trim()
             if (userInput.isNotEmpty()) {
@@ -50,7 +54,7 @@ class ChatbotActivity : AppCompatActivity() {
 
     var waitingForUserInput: Boolean = false
     private fun analyzeUserInput(userInput: String) {
-        if (userInput.lowercase() == "emergency") {
+        if (userInput.lowercase() == "emergency" || userInput.lowercase() == "emer" || userInput.lowercase() == "e") {
             displayChatMessage("Bot: Ada apa?")
             waitingForUserInput = true
         } else {
@@ -78,7 +82,7 @@ class ChatbotActivity : AppCompatActivity() {
                     val predictions = response.body()
                     if (!predictions.isNullOrEmpty()) {
                         val prediction = predictions[0].prediction
-                        displayChatMessage("Chatbot: Analisis keadaan: $prediction")
+                        displayChatMessage("Analisis Unit: $prediction")
                         unitEmergency = prediction
                         Log.d("Unit1", unitEmergency)
                         val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
@@ -112,12 +116,10 @@ class ChatbotActivity : AppCompatActivity() {
                                 Log.d("check", "onResponse: ${response.code()}")
                                 if (response.isSuccessful) {
                                     Log.d("kirim", "onResponse: data berhasil dikirim")
-                                    val message = "data berhasil dikirim"
-                                    displayChatMessage(message)
+                                    Toast.makeText(this@ChatbotActivity, "data berhasil dikirim", Toast.LENGTH_SHORT).show()
                                 } else {
                                     Log.d("gagal", "onResponse: data tidak berhasil dikirim")
-                                    val message = "data tidak berhasil dikirim"
-                                    displayChatMessage(message)
+                                    Toast.makeText(this@ChatbotActivity, "data tidak berhasil dikirim", Toast.LENGTH_SHORT).show()
                                 }
                             }
 

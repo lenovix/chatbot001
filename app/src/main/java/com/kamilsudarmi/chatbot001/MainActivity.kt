@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -54,6 +55,10 @@ class MainActivity : AppCompatActivity(){
 
         displayRandomImage()
 
+        button()
+    }
+
+    private fun button() {
         binding.fabChatbot.setOnClickListener {
             val chatbotPage = Intent(this, ChatbotActivity::class.java)
             startActivity(chatbotPage)
@@ -90,6 +95,7 @@ class MainActivity : AppCompatActivity(){
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     Log.d("check", "onResponse: ${response.code()}")
                     if (response.isSuccessful) {
+                        Toast.makeText(this@MainActivity, "Calling an Ambulance", Toast.LENGTH_SHORT).show()
                         Log.d("kirim", "onResponse: data berhasil dikirim")
                     } else {
                         Log.d("gagal", "onResponse: data tidak berhasil dikirim")
@@ -125,6 +131,7 @@ class MainActivity : AppCompatActivity(){
                     Log.d("check", "onResponse: ${response.code()}")
                     if (response.isSuccessful) {
                         Log.d("kirim", "onResponse: data berhasil dikirim")
+                        Toast.makeText(this@MainActivity, "Calling an Police", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.d("gagal", "onResponse: data tidak berhasil dikirim")
                     }
@@ -159,6 +166,7 @@ class MainActivity : AppCompatActivity(){
                     Log.d("check", "onResponse: ${response.code()}")
                     if (response.isSuccessful) {
                         Log.d("kirim", "onResponse: data berhasil dikirim")
+                        Toast.makeText(this@MainActivity, "Calling an Firefighter", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.d("gagal", "onResponse: data tidak berhasil dikirim")
                     }
