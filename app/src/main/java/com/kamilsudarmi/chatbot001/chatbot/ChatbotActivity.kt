@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.kamilsudarmi.chatbot001.api.naiveBayer.ApiClientNB.apiServiceNB
 import com.kamilsudarmi.chatbot001.api.naiveBayer.ChatResponse
 import retrofit2.Call
@@ -12,6 +13,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import com.google.gson.Gson
 import com.kamilsudarmi.chatbot001.Constant
+import com.kamilsudarmi.chatbot001.R
 import com.kamilsudarmi.chatbot001.api.ApiService
 import com.kamilsudarmi.chatbot001.api.naiveBayer.UserInput
 import com.kamilsudarmi.chatbot001.databinding.ActivityChatbotBinding
