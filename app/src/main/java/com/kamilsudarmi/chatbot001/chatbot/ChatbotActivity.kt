@@ -1,6 +1,7 @@
 package com.kamilsudarmi.chatbot001.chatbot
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import com.google.gson.Gson
 import com.kamilsudarmi.chatbot001.Constant
+import com.kamilsudarmi.chatbot001.MainActivity
 import com.kamilsudarmi.chatbot001.R
 import com.kamilsudarmi.chatbot001.api.ApiService
 import com.kamilsudarmi.chatbot001.api.naiveBayer.UserInput
@@ -36,6 +38,11 @@ class ChatbotActivity : AppCompatActivity() {
 
         welcomeInformation()
 
+        binding.buttonBack.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
         binding.buttonSend.setOnClickListener {
             val userInput = binding.editTextUserInput.text.toString().trim()
             if (userInput.isNotEmpty()) {
@@ -78,7 +85,6 @@ class ChatbotActivity : AppCompatActivity() {
                     analyzeEmergencyInfo(emergencyUser, addressUser)
                 }
             }
-            welcomeInformation()
         }
     }
 
@@ -100,7 +106,7 @@ class ChatbotActivity : AppCompatActivity() {
                     val predictions = response.body()
                     if (!predictions.isNullOrEmpty()) {
                         val prediction = predictions[0].prediction
-                        displayChatMessage("Analisis Unit: $prediction")
+                        displayChatMessage("Baik, Laporan akan diteruskan ke unit $prediction")
                         unitEmergency = prediction
                         Log.d("Unit1", unitEmergency)
                         val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
@@ -111,9 +117,11 @@ class ChatbotActivity : AppCompatActivity() {
                         //Log.d("latlong", "onCreate: $latLongUser")
 
                         // Mengirim data ke server
+                        val latLongUser = ""
                         val requestUnit = RequestUnit(
                             user_id = user_id, // Ganti dengan nilai user ID yang sesuai
                             address = userAddress, // Ganti dengan alamat pengguna yang sesuai
+                            latlong = latLongUser,
                             situation = userInput, // Ganti dengan situasi yang sesuai
                             unit = unitEmergency, // Ganti dengan unit yang dipilih oleh pengguna
                             status = "Pending" // Ganti dengan status yang sesuai

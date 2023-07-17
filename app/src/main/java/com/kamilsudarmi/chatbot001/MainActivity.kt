@@ -79,7 +79,8 @@ class MainActivity : AppCompatActivity(){
             Log.d("latlong", "onCreate: $latLongUser")
             val requestUnit = RequestUnit(
                 user_id = user_id, // Ganti dengan nilai user ID yang sesuai
-                address = addressUser, // Ganti dengan alamat pengguna yang sesuai
+                address = addressUser,// Ganti dengan alamat pengguna yang sesuai
+                latlong = latLongUser,
                 situation = "EMERGENCY", // Ganti dengan situasi yang sesuai
                 unit = "Ambulance", // Ganti dengan unit yang dipilih oleh pengguna
                 status = "Pending" // Ganti dengan status yang sesuai
@@ -115,6 +116,7 @@ class MainActivity : AppCompatActivity(){
             val requestUnit = RequestUnit(
                 user_id = user_id, // Ganti dengan nilai user ID yang sesuai
                 address = addressUser, // Ganti dengan alamat pengguna yang sesuai
+                latlong = latLongUser,
                 situation = "EMERGENCY", // Ganti dengan situasi yang sesuai
                 unit = "Police", // Ganti dengan unit yang dipilih oleh pengguna
                 status = "Pending" // Ganti dengan status yang sesuai
@@ -150,6 +152,7 @@ class MainActivity : AppCompatActivity(){
             val requestUnit = RequestUnit(
                 user_id = user_id, // Ganti dengan nilai user ID yang sesuai
                 address = addressUser, // Ganti dengan alamat pengguna yang sesuai
+                latlong = latLongUser,
                 situation = "EMERGENCY", // Ganti dengan situasi yang sesuai
                 unit = "Firefighter", // Ganti dengan unit yang dipilih oleh pengguna
                 status = "Pending" // Ganti dengan status yang sesuai
@@ -204,8 +207,7 @@ class MainActivity : AppCompatActivity(){
             startActivity(intent)
             finish() // Optional: Tutup MainActivity agar pengguna tidak dapat kembali ke sini tanpa login
         } else {
-            val welcomeMessage = "Welcome, $userName!"
-            binding.tvWelcome.text = welcomeMessage
+            binding.tvWelcome.text = userName
         }
     }
 
@@ -236,7 +238,7 @@ class MainActivity : AppCompatActivity(){
     private fun displayRandomImage() {
         val randomIndex = Random.nextInt(imageArray.size)
         val randomImage = imageArray[randomIndex]
-        binding.imgTipsHealty.setImageResource(randomImage)
+        binding.imgTipsHealth.setImageResource(randomImage)
         Log.d("random image", "displayRandomImage: $randomIndex")
     }
 

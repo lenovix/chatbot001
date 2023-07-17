@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">chatbot001</string>
+    <string name="ambulance">AMBULANCE</string>
+    <string name="police">POLICE</string>
+    <string name="firefighter">FIREFIGHTER</string>
+    <string name="your_location_is_not_detected">Your location is not detected</string>
+    <string name="tips_for_your_health">Tips for your health</string>
+    <string name="image_for_tips">image for tips</string>
+    <string name="emergency_chatbot">Emergency Chatbot</string>
+    <string name="logout">Logout</string>
+    <string name="name">name</string>
+    <string name="welcome">Welcome</string>
+    <string name="my_location">My Location</string>
+    <string name="emergency_call">Emergency Call</string>
 </resources>
