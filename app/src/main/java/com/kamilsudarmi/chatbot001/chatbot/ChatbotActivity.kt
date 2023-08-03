@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.kamilsudarmi.chatbot001.api.naiveBayer.ApiClientNB.apiServiceNB
 import com.kamilsudarmi.chatbot001.api.naiveBayer.ChatResponse
 import retrofit2.Call
@@ -15,9 +14,7 @@ import retrofit2.Response
 import com.google.gson.Gson
 import com.kamilsudarmi.chatbot001.Constant
 import com.kamilsudarmi.chatbot001.MainActivity
-import com.kamilsudarmi.chatbot001.R
 import com.kamilsudarmi.chatbot001.api.ApiService
-import com.kamilsudarmi.chatbot001.api.naiveBayer.UserInput
 import com.kamilsudarmi.chatbot001.databinding.ActivityChatbotBinding
 import com.kamilsudarmi.chatbot001.requestUnit.RequestUnit
 import okhttp3.RequestBody
@@ -46,15 +43,15 @@ class ChatbotActivity : AppCompatActivity() {
         binding.buttonSend.setOnClickListener {
             val userInput = binding.editTextUserInput.text.toString().trim()
             if (userInput.isNotEmpty()) {
-                displayChatMessage("You: $userInput")
+                displayChatMessage("YOU: $userInput")
                 analyzeUserInput(userInput)
                 binding.editTextUserInput.setText("")
             }
         }
     }
-    fun welcomeInformation(){
+    private fun welcomeInformation(){
         displayChatMessage("INFORMATION:")
-        displayChatMessage("untuk menggunakan fitur analisa unit, bisa ketik:")
+        displayChatMessage("To use the unit analysis feature, you can type:")
         displayChatMessage("e/emer/emergency")
     }
 
@@ -70,12 +67,12 @@ class ChatbotActivity : AppCompatActivity() {
     var emergencyUser = ""
     private fun analyzeUserInput(userInput: String) {
         if (userInput.lowercase() == "emergency" || userInput.lowercase() == "emer" || userInput.lowercase() == "e") {
-            displayChatMessage("Bot: Ada apa?")
+            displayChatMessage("BOT: What has happened?")
             waitingForUserInput = true
         } else {
             if (waitingForUserInput) {
                 emergencyUser = userInput
-                displayChatMessage("Bot: Dimana?")
+                displayChatMessage("Bot: Where?")
                 waitingForUserInput = false
                 waitingForUserInputAddress = true
             }else{
@@ -106,29 +103,24 @@ class ChatbotActivity : AppCompatActivity() {
                     val predictions = response.body()
                     if (!predictions.isNullOrEmpty()) {
                         val prediction = predictions[0].prediction
-                        displayChatMessage("Baik, Laporan akan diteruskan ke unit $prediction")
+                        displayChatMessage("Ok, Report will be forwarded to unit $prediction")
                         unitEmergency = prediction
                         Log.d("Unit1", unitEmergency)
                         val sharedPreferences = getSharedPreferences("login_status", Context.MODE_PRIVATE)
-                        val user_id = sharedPreferences.getString("user_id", "")
-                        //val sharedPreferencesAdress = getSharedPreferences("address", Context.MODE_PRIVATE)
-                        //val user_address = sharedPreferencesAdress.getString("address", "").toString()
-                        //Log.d("address", "onCreate: $user_address")
-                        //Log.d("latlong", "onCreate: $latLongUser")
+                        val userId = sharedPreferences.getString("user_id", "")
 
-                        // Mengirim data ke server
                         val latLongUser = ""
                         val requestUnit = RequestUnit(
-                            user_id = user_id, // Ganti dengan nilai user ID yang sesuai
-                            address = userAddress, // Ganti dengan alamat pengguna yang sesuai
+                            user_id = userId,
+                            address = userAddress,
                             latlong = latLongUser,
-                            situation = userInput, // Ganti dengan situasi yang sesuai
-                            unit = unitEmergency, // Ganti dengan unit yang dipilih oleh pengguna
-                            status = "Pending" // Ganti dengan status yang sesuai
+                            situation = userInput,
+                            unit = unitEmergency,
+                            status = "Pending"
                         )
 
                         val retrofit = Retrofit.Builder()
-                            .baseUrl(Constant.BASE_URL_NODE) // Ganti dengan base URL dari REST API Anda
+                            .baseUrl(Constant.BASE_URL_NODE)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build()
 
@@ -141,11 +133,11 @@ class ChatbotActivity : AppCompatActivity() {
                             ) {
                                 Log.d("check", "onResponse: ${response.code()}")
                                 if (response.isSuccessful) {
-                                    Log.d("kirim", "onResponse: data berhasil dikirim")
-                                    Toast.makeText(this@ChatbotActivity, "data berhasil dikirim", Toast.LENGTH_SHORT).show()
+                                    Log.d("kirim", "onResponse: data sent successfully")
+                                    Toast.makeText(this@ChatbotActivity, "data sent successfully", Toast.LENGTH_SHORT).show()
                                 } else {
-                                    Log.d("gagal", "onResponse: data tidak berhasil dikirim")
-                                    Toast.makeText(this@ChatbotActivity, "data tidak berhasil dikirim", Toast.LENGTH_SHORT).show()
+                                    Log.d("gagal", "onResponse: data was not sent successfully")
+                                    Toast.makeText(this@ChatbotActivity, "data was not sent successfully", Toast.LENGTH_SHORT).show()
                                 }
                             }
 
